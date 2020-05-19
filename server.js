@@ -12,8 +12,7 @@ const auth = require("./routes/api/auth");
 const app = express();
 
 // Bodyparser Middleware
-app.use(express.static(path.join(__dirname, "client", "build")));
-
+app.use(express.json());
 // DB Config
 const db = config.get("mongoURI");
 
@@ -35,8 +34,14 @@ app.use("/api/tickets", tickets);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(espress.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.js"));
+  });
+}
+
 const port = process.env.PORT || 5000;
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.js"));
-});
+
 app.listen(port, () => console.log(`Server started on port ${port}`));
