@@ -37,7 +37,7 @@ app.use("/api/auth", auth);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client", "build")));
   app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname, "client/build", "index.html"));
+    response.sendFile(path.join(__dirname, "client/build", "index.js"));
   });
 }
 
