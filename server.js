@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 
 // Connect to Mongo
 mongoose
-  .connect(db, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
