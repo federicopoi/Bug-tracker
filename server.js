@@ -37,6 +37,6 @@ app.use("/api/auth", auth);
 
 const port = process.env.PORT || 5000;
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "build", "index.js"));
 });
 app.listen(port, () => console.log(`Server started on port ${port}`));
