@@ -12,9 +12,12 @@ const auth = require("./routes/api/auth");
 const app = express();
 const port = process.env.PORT || 8080;
 
+// DB Config
+const db = config.get("mongoURI");
+
 // Connect to Mongo
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(process.env.MONGODB_URI || db, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -24,9 +27,6 @@ mongoose
 
 // Bodyparser Middleware
 app.use(express.json());
-
-// DB Config
-const db = config.get("mongoURI");
 
 // User routes
 app.use("/api/items", items);
