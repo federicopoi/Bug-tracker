@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://fedepoi3:Albrimasa.1@cluster0-r0f7f.gcp.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "sl_mysecret"
+}
