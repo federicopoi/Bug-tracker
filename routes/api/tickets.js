@@ -18,15 +18,7 @@ router.get("/", (req, res) => {
 // @desc Create A Item
 // @access Public
 router.post("/", (req, res) => {
-  const {
-    title,
-    description,
-    status,
-    priority,
-    assignedDev,
-    project,
-    type,
-  } = req.body;
+  const { title, description, priority, assignedDev, project, type } = req.body;
 
   // Simple validation
   if (!title || !description || !priority || !assignedDev || !type) {
@@ -36,7 +28,6 @@ router.post("/", (req, res) => {
   const newTicket = new Ticket({
     title,
     description,
-    status,
     priority,
     assignedDev,
     project,

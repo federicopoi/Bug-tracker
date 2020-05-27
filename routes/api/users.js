@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 // @route POST api/users/update
 // @desc Update User Role
 // @access Pricvate
-router.post("/update", auth, (req, res) => {
+router.post("/update", (req, res) => {
   const { name, role } = req.body;
 
   User.findOne({ name }).exec((err, user) => {
