@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux";
 import { getUsers } from "../../../store/actions/usersActions";
 
-export class UsersList extends Component {
+export class ManageUsersList extends Component {
   componentDidMount() {
     this.props.getUsers();
   }
@@ -23,7 +23,7 @@ export class UsersList extends Component {
         <CardBody>
           <div className="d-flex align-items-center">
             <div className="">
-              <CardTitle>Your Personal</CardTitle>
+              <CardTitle>Your Staff</CardTitle>
               <CardSubtitle>All users in your database</CardSubtitle>
             </div>
           </div>
@@ -70,4 +70,4 @@ const mapStateToProps = (state) => {
     user: state.auth.user,
   };
 };
-export default connect(mapStateToProps, { getUsers })(UsersList);
+export default connect(mapStateToProps, { getUsers })(ManageUsersList);

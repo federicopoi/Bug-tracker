@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { createTicket } from "../../../store/actions/ticketsActions";
 import { clearErrors } from "../../../store/actions/errorActions";
 import { connect } from "react-redux";
-import { getUsers } from "../../../store/actions/usersActions";
+import { getTeams } from "../../../store/actions/teamActions";
 
 import {
   Button,
@@ -16,20 +16,21 @@ import {
   Alert,
 } from "reactstrap";
 export class CreateTicketModal extends Component {
-  componentDidMount() {
-    this.props.getUsers();
-  }
   state = {
     modal: false,
-    title: "",
+    summary: "",
     description: "",
-    status: "",
     priority: "",
-    assignedDev: "",
-    project: this.props.title,
+    assignedTeam: "",
+    project: this.props.name,
+    submitter: this.props.user.name,
     type: "",
     msg: null,
   };
+
+  componentDidMount() {
+    this.props.getTeams();
+  }
 
   componentDidUpdate(prevProps) {
     const { error } = this.props;
@@ -62,29 +63,32 @@ export class CreateTicketModal extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const {
-      title,
+      summary,
       description,
       priority,
-      assignedDev,
+      assignedTeam,
+      submitter,
       project,
       type,
     } = this.state;
 
     // Create usre object
     const newTicket = {
-      title,
+      summary,
       description,
       priority,
-      assignedDev,
+      assignedTeam,
+      submitter,
       project,
       type,
     };
     this.props.createTicket(newTicket);
     if (
-      title === "" ||
+      summary === "" ||
       description === "" ||
+      submitter === "" ||
       priority === "" ||
-      assignedDev === "" ||
+      assignedTeam === "" ||
       project === "" ||
       type === ""
     ) {
@@ -94,7 +98,7 @@ export class CreateTicketModal extends Component {
     }
   };
   render() {
-    const { users } = this.props.users;
+    const { teams } = this.props.teams;
     return (
       <div>
         <Button onClick={this.toggle} className="bg-success border-success">
@@ -105,25 +109,24 @@ export class CreateTicketModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="name">Title</Label>
+                <Label for="summary">Summary</Label>
                 <Input
                   type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Title"
+                  name="summary"
+                  id="summary"
+                  placeholder="Summary"
                   className="mb-3"
                   onChange={this.onChange}
                 />
-                <Label for="email">Description</Label>
+                <Label for="description">Description</Label>
                 <Input
-                  type="text"
+                  type="textarea"
                   name="description"
                   id="description"
                   placeholder="Description"
                   className="mb-3"
                   onChange={this.onChange}
                 />
-
                 <Label className="mt-1">Priority</Label>
                 <Input
                   type="select"
@@ -138,17 +141,17 @@ export class CreateTicketModal extends Component {
                   <option>Urgent</option>
                 </Input>
                 <Label for="exampleSelect" className="mt-3">
-                  Assigned Developer
+                  Resolve Team
                 </Label>
                 <Input
                   type="select"
-                  name="assignedDev"
-                  id="assignedDev"
+                  name="assignedTeam"
+                  id="assignedTeam"
                   onChange={this.onChange}
                 >
                   ><option>Select Option</option>
-                  {users &&
-                    users.map(({ name, _id }) => {
+                  {teams &&
+                    teams.map(({ name, _id }) => {
                       return <option key={_id}>{name}</option>;
                     })}
                 </Input>
@@ -157,12 +160,18 @@ export class CreateTicketModal extends Component {
                   type="select"
                   name="type"
                   id="type"
+                  className="mb-3"
                   onChange={this.onChange}
                 >
                   <option>Select Option</option>
                   <option>Bug / Errors</option>
                   <option>Task</option>
+                  <option>Feature</option>
+                  <option>Usability Problem</option>
+                  <option>Analysis</option>
                 </Input>
+                <Label for="exampleFile">Attach File</Label>
+                <Input type="file" name="file" id="exampleFile" />
                 {this.state.msg ? (
                   <Alert color="danger" className="mt-3">
                     {this.state.msg}
@@ -181,10 +190,11 @@ export class CreateTicketModal extends Component {
 }
 const mapStateToProps = (state) => ({
   error: state.error,
-  users: state.users,
+  user: state.auth.user,
+  teams: state.teams,
 });
 export default connect(mapStateToProps, {
   createTicket,
   clearErrors,
-  getUsers,
+  getTeams,
 })(CreateTicketModal);

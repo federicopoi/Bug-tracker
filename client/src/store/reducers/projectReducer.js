@@ -2,6 +2,7 @@ import {
   GET_PROJECTS,
   PROJECTS_LOADING,
   CREATE_PROJECT,
+  UPDATE_PROJECT,
 } from "../actions/types";
 const initState = {
   projects: [],
@@ -20,6 +21,11 @@ export default function (state = initState, action) {
       return {
         ...state,
         projects: [action.payload, ...state.projects],
+      };
+    case UPDATE_PROJECT:
+      return {
+        ...state,
+        projects: [action.payload],
       };
     case PROJECTS_LOADING:
       return {

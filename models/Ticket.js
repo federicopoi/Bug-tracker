@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const TicketSchema = new Schema(
   {
-    title: {
+    summary: {
       type: String,
       required: true,
       unique: true,
@@ -22,9 +22,16 @@ const TicketSchema = new Schema(
       type: String,
       required: true,
     },
-    assignedDev: {
+    submitter: {
       type: String,
       required: true,
+    },
+    assignedTeam: {
+      type: String,
+      required: true,
+    },
+    assignedTo: {
+      type: String,
     },
     project: {
       type: String,

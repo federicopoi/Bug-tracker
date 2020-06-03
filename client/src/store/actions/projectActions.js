@@ -1,4 +1,9 @@
-import { GET_PROJECTS, PROJECTS_LOADING, CREATE_PROJECT } from "./types";
+import {
+  GET_PROJECTS,
+  PROJECTS_LOADING,
+  CREATE_PROJECT,
+  UPDATE_PROJECT,
+} from "./types";
 import { returnErrors } from "./errorActions";
 import axios from "axios";
 
@@ -32,6 +37,26 @@ export const createProject = (project) => (dispatch) => {
           err.response.data,
           err.response.status,
           "CREATE_PROJECT_FAIL"
+        )
+      );
+    });
+};
+
+export const updateProject = (project) => (dispatch) => {
+  axios
+    .post("/api/projects/update", project)
+    .then((res) =>
+      dispatch({
+        type: UPDATE_PROJECT,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(
+        returnErrors(
+          err.response.data,
+          err.response.status,
+          "UPDATE_PROJECT_FAIL"
         )
       );
     });

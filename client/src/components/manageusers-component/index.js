@@ -1,3 +1,3 @@
 import ManageUsers from "./manageusers/ManageUsers";
-import UsersList from "./users/usersList";
-export { ManageUsers, UsersList };
+import ManageUsersList from "./userslist/ManageUsersList";
+export { ManageUsers, ManageUsersList };

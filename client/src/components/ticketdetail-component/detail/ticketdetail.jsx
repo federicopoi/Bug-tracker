@@ -1,68 +1,84 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Input,
-  Table,
-  Button,
-  Row,
-  Col,
-} from "reactstrap";
-import moment from "moment";
+import { Card, CardBody, Row, Col } from "reactstrap";
+import { connect } from "react-redux";
+import { getTickets } from "../../../store/actions/ticketsActions";
 export class TicketDetail extends Component {
+  componentDidMount() {
+    this.props.getTickets();
+  }
   render() {
-    const {
-      status,
-      priority,
-      assignedDev,
-      project,
-      created,
-      type,
-    } = this.props.props;
+    const { tickets } = this.props.tickets;
     return (
       <div>
-        <Card>
-          <CardBody>
-            <Row className="my-2">
-              <Col sm={6}>
-                <h5 className="font-16 font-medium">Status</h5>
-                <h5 className="font-14 font-weight-normal">{status}</h5>
-              </Col>
-              <Col sm={6}>
-                <h5 className="font-16 font-medium">Priority</h5>
-                <h5 className="font-14 font-weight-normal">{priority}</h5>
-              </Col>
-            </Row>
-            <Row className="my-2">
-              <Col sm={6}>
-                <h5 className="font-16 font-medium">Assigned Developer</h5>
-                <h5 className="font-14 font-weight-normal">{assignedDev}</h5>
-              </Col>
-              <Col sm={6}>
-                <h5 className="font-16 font-medium">Project</h5>
-                <h5 className="font-14 font-weight-normal">{project}</h5>
-              </Col>
-            </Row>
-            <Row className="my-2">
-              <Col sm={6}>
-                <h5 className="font-16 font-medium">Created</h5>
-                <h5 className="font-14 font-weight-normal">
-                  {moment(created).fromNow()}
-                </h5>
-              </Col>
-              <Col sm={6}>
-                <h5 className="font-16 font-medium">Type</h5>
-                <h5 className="font-14 font-weight-normal">{type}</h5>
-              </Col>
-            </Row>
-          </CardBody>
-        </Card>
+        {tickets &&
+          tickets
+            .filter(({ summary }) => summary === this.props.props.summary)
+            .map(
+              ({
+                status,
+                priority,
+                assignedTeam,
+                project,
+                assignedTo,
+                created,
+                type,
+                submitter,
+                _id,
+              }) => {
+                return (
+                  <Card key={_id}>
+                    <CardBody>
+                      <Row className="my-2">
+                        <Col sm={6}>
+                          <h5 className="font-16 font-medium">Status</h5>
+                          <h5 className="font-14 font-weight-normal">
+                            {status}
+                          </h5>
+                        </Col>
+                        <Col sm={6}>
+                          <h5 className="font-16 font-medium">Priority</h5>
+                          <h5 className="font-14 font-weight-normal">
+                            {priority}
+                          </h5>
+                        </Col>
+                      </Row>
+                      <Row className="my-2">
+                        <Col sm={6}>
+                          <h5 className="font-16 font-medium">Assigned Team</h5>
+                          <h5 className="font-14 font-weight-normal">
+                            {assignedTeam}
+                          </h5>
+                        </Col>
+                        <Col sm={6}>
+                          <h5 className="font-16 font-medium">Submitter</h5>
+                          <h5 className="font-14 font-weight-normal">
+                            {submitter}
+                          </h5>
+                        </Col>
+                      </Row>
+                      <Row className="my-2">
+                        <Col sm={6}>
+                          <h5 className="font-16 font-medium">Assigned To</h5>
+                          <h5 className="font-14 font-weight-normal">
+                            {assignedTo}
+                          </h5>
+                        </Col>
+                        <Col sm={6}>
+                          <h5 className="font-16 font-medium">Type</h5>
+                          <h5 className="font-14 font-weight-normal">{type}</h5>
+                        </Col>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                );
+              }
+            )}
       </div>
     );
   }
 }
 
-export default TicketDetail;
+const mapStateToProps = (state) => ({
+  tickets: state.tickets,
+});
+export default connect(mapStateToProps, { getTickets })(TicketDetail);

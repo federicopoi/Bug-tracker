@@ -32,6 +32,20 @@ router.post("/update", (req, res) => {
   });
 });
 
+// @route POST api/users/updateteam
+// @desc Update User Role
+// @access Pricvate
+router.post("/updateteam", (req, res) => {
+  const { name, team } = req.body;
+
+  User.findOne({ name }).exec((err, user) => {
+    if (err) console.log("Update User  ", err);
+    user.team = team;
+    user.save();
+    res.json(user);
+  });
+});
+
 // @route POST api/users/
 // @desc Register new user
 // @access Public

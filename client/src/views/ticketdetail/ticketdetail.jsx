@@ -5,7 +5,8 @@ import {
   TicketDetail,
   TextDetail,
   TicketsComments,
-  QrCode,
+  TicketHistory,
+  TicketAttachments,
 } from "../../components/ticketdetail-component";
 
 const ProjectDetail = (props) => {
@@ -16,12 +17,16 @@ const ProjectDetail = (props) => {
   return (
     <div>
       <Row>
-        <Col sm={6} lg={5}>
+        <Col sm={12} lg={12}>
           <TextDetail props={props.location.state}></TextDetail>
+        </Col>
+        <Col sm={6} lg={5}>
           <TicketDetail props={props.location.state}></TicketDetail>
+          <TicketHistory props={props.location.state}></TicketHistory>
         </Col>
         <Col sm={6} lg={7}>
           <TicketsComments props={props.location.state}></TicketsComments>
+          <TicketAttachments props={props.location.state}></TicketAttachments>
         </Col>
       </Row>
     </div>

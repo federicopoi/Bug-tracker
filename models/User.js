@@ -20,7 +20,7 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      default: "Developer",
+      default: "Not Checked",
     },
     register_date: {
       type: Date,

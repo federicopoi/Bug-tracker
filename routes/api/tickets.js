@@ -18,18 +18,35 @@ router.get("/", (req, res) => {
 // @desc Create A Item
 // @access Public
 router.post("/", (req, res) => {
-  const { title, description, priority, assignedDev, project, type } = req.body;
+  const {
+    summary,
+    description,
+    priority,
+    submitter,
+    assignedTeam,
+    project,
+    type,
+  } = req.body;
 
   // Simple validation
-  if (!title || !description || !priority || !assignedDev || !type) {
+  if (
+    !summary ||
+    !description ||
+    !submitter ||
+    !priority ||
+    !assignedTeam ||
+    !type ||
+    !project
+  ) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
 
   const newTicket = new Ticket({
-    title,
+    summary,
     description,
     priority,
-    assignedDev,
+    submitter,
+    assignedTeam,
     project,
     type,
   });
@@ -37,13 +54,28 @@ router.post("/", (req, res) => {
   newTicket.save().then((ticket) => res.json(ticket));
 });
 
+// @route POST api/tickets/assign
+// @desc Update Project Users Role
+// @access Public
+router.post("/assign", (req, res) => {
+  const { summary, assignedTo } = req.body;
+
+  Ticket.findOne({ summary }).exec((err, ticket) => {
+    if (err) console.log("Assigned Ticket  ", err);
+    ticket.assignedTo = assignedTo;
+    ticket.status = "Assigned";
+    ticket.save();
+    res.json(ticket);
+  });
+});
+
 // @route POST api/tickets/addcomment
 // @desc Update Project Users Role
 // @access Public
 router.post("/addcomment", (req, res) => {
-  const { title, comment } = req.body;
+  const { summary, comment } = req.body;
 
-  Ticket.findOne({ title }).exec((err, ticket) => {
+  Ticket.findOne({ summary }).exec((err, ticket) => {
     if (err) console.log("Update Ticket  ", err);
 
     const arr = ticket.comments;
@@ -52,6 +84,24 @@ router.post("/addcomment", (req, res) => {
     ticket.comments = concatArr;
 
     ticket.save().then((ticket) => res.json(ticket));
+  });
+});
+
+// @route POST api/tickets/update
+// @desc Update Ticket
+// @access Public
+router.post("/update", (req, res) => {
+  const { summary, description, status, priority } = req.body;
+
+  Ticket.findOne({ summary }).exec((err, ticket) => {
+    if (err) console.log("Update Ticket  ", err);
+
+    ticket.summary = summary;
+    ticket.description = description;
+    ticket.priority = priority;
+    ticket.status = status;
+    ticket.save();
+    res.json(ticket);
   });
 });
 

@@ -1,8 +1,14 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
-import { UsersList, ManageUsers } from "../../components/manageusers-component";
-
-const ManageUsersView = () => {
+import {
+  ManageUsersList,
+  ManageUsers,
+} from "../../components/manageusers-component";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+const ManageUsersView = (props) => {
+  const { role } = props.user;
+  if (role !== "Admin") return <Redirect to="/" />;
   return (
     <div>
       <Row>
@@ -10,10 +16,13 @@ const ManageUsersView = () => {
           <ManageUsers></ManageUsers>
         </Col>
         <Col sm={8} lg={8}>
-          <UsersList></UsersList>
+          <ManageUsersList></ManageUsersList>
         </Col>
       </Row>
     </div>
   );
 };
-export default ManageUsersView;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+export default connect(mapStateToProps)(ManageUsersView);

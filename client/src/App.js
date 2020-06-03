@@ -8,7 +8,6 @@ import RegisterPage from "./auth-components/register/registerpage";
 import "./assets/scss/style.css";
 import "./index.css";
 import PrivateRoute from "./PrivateRoute";
-
 import { loadUser } from "./store/actions/authActions";
 import { connect } from "react-redux";
 
@@ -20,6 +19,7 @@ class App extends Component {
   render() {
     console.log(this.props.isLoading);
     console.log(this.props.isAuthenticated);
+
     return (
       <BrowserRouter>
         <Switch>

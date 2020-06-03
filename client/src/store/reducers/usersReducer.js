@@ -9,7 +9,7 @@ export default function (state = initState, action) {
     case GET_USERS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.reverse(),
         loading: false,
       };
     case UPDATE_USERS:

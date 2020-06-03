@@ -3,6 +3,7 @@ import { createProject } from "../../../store/actions/projectActions";
 import { clearErrors } from "../../../store/actions/errorActions";
 import { connect } from "react-redux";
 import { getUsers } from "../../../store/actions/usersActions";
+import { getTeams } from "../../../store/actions/teamActions";
 
 import {
   Button,
@@ -18,12 +19,14 @@ import {
 export class CreateProjectModal extends Component {
   componentDidMount() {
     this.props.getUsers();
+    this.props.getTeams();
   }
   state = {
     modal: false,
-    title: "",
-    description: "",
-    personal: {},
+    name: "",
+    manager: "",
+    teams: {},
+    submitters: {},
     msg: null,
   };
 
@@ -61,28 +64,28 @@ export class CreateProjectModal extends Component {
         value.push(options[i].value);
       }
     }
-    this.setState({ personal: value });
+    this.setState({ [e.target.name]: value });
   };
   onSubmit = (e) => {
     e.preventDefault();
-    const { title, description, personal } = this.state;
+    const { name, manager, teams, submitters } = this.state;
 
-    // Create usre object
+    // Create Project object
     const newProject = {
-      title,
-      description,
-      personal,
+      name,
+      manager,
+      teams,
+      submitters,
     };
     this.props.createProject(newProject);
-    if (title === "" || description === "") {
-      console.log("Error");
-    } else {
+    if ((teams && teams.length) || (submitters && submitters.length)) {
       this.toggle();
     }
   };
   render() {
     const { users } = this.props.users;
-    console.log(this.props);
+    const { teams } = this.props.teams;
+
     return (
       <div>
         <Button onClick={this.toggle} className="bg-success border-success">
@@ -93,37 +96,62 @@ export class CreateProjectModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="name">Title</Label>
+                <Label for="name">Name</Label>
                 <Input
                   type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Title"
+                  name="name"
+                  id="name"
+                  placeholder="Project Name"
                   className="mb-3"
                   onChange={this.onChange}
                 />
-                <Label for="email">Description</Label>
+                <Label for="manager">Project Manager</Label>
                 <Input
-                  type="text"
-                  name="description"
-                  id="description"
-                  placeholder="Description"
-                  className="mb-3"
+                  type="select"
+                  name="manager"
+                  id="manager"
                   onChange={this.onChange}
-                />
-                <Label for="personal">Select Personal</Label>
+                  className="mb-2"
+                >
+                  <option>Select Option</option>
+                  {users &&
+                    users
+                      .filter(({ role }) => role === "Project Manager")
+                      .map(({ name }) => {
+                        return <option>{name}</option>;
+                      })}
+                </Input>
+                <Label for="teams">Solving Teams</Label>
                 <Input
                   onChange={this.onChangeMultiple}
                   type="select"
-                  name="personal"
-                  id="personal"
+                  name="teams"
+                  id="teams"
+                  className="mb-2"
                   multiple
                 >
-                  {users &&
-                    users.map(({ name }) => {
+                  {teams &&
+                    teams.map(({ name }) => {
                       return <option>{name}</option>;
                     })}
                 </Input>
+                <Label for="submitters">Submitters</Label>
+                <Input
+                  onChange={this.onChangeMultiple}
+                  type="select"
+                  name="submitters"
+                  id="submitters"
+                  className="mb-2"
+                  multiple
+                >
+                  {users &&
+                    users
+                      .filter(({ role }) => role === "Submitter")
+                      .map(({ name }) => {
+                        return <option>{name}</option>;
+                      })}
+                </Input>
+
                 {this.state.msg ? (
                   <Alert color="danger" className="mt-3">
                     {this.state.msg}
@@ -143,9 +171,11 @@ export class CreateProjectModal extends Component {
 const mapStateToProps = (state) => ({
   error: state.error,
   users: state.users,
+  teams: state.teams,
 });
 export default connect(mapStateToProps, {
   createProject,
   clearErrors,
   getUsers,
+  getTeams,
 })(CreateProjectModal);

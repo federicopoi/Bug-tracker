@@ -37,7 +37,7 @@ export class ManageUsers extends Component {
               Select User
             </Label>
             <Input type="select" name="name" id="name" onChange={this.onChange}>
-              ><option>Select User</option>
+              ><option>Select Option</option>
               {users &&
                 users
                   .filter(({ name }) => name !== this.props.user.name)
@@ -52,10 +52,12 @@ export class ManageUsers extends Component {
               Select role to assign
             </Label>
             <Input type="select" name="role" id="role" onChange={this.onChange}>
-              <option>Select Role</option>
+              <option>Select Option</option>
               <option>Admin</option>
               <option>Project Manager</option>
-              <option>Developer</option>
+              <option>Team Manager</option>
+              <option>Updater</option>
+              <option>Submitter</option>
             </Input>
           </FormGroup>
           <Button className="bg-success border-success mt-2">Submit</Button>

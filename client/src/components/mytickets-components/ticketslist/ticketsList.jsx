@@ -31,8 +31,8 @@ class TicketsList extends Component {
           <Table className="no-wrap v-middle" responsive>
             <thead>
               <tr className="border-0">
-                <th className="border-0">Title</th>
-
+                <th className="border-0">Summary</th>
+                <th className="border-0">Description</th>
                 <th className="border-0">Status</th>
                 <th className="border-0">Priority</th>
                 <th className="border-0">Created</th>
@@ -41,14 +41,16 @@ class TicketsList extends Component {
             {tickets &&
               tickets.map(
                 ({
-                  title,
+                  summary,
                   description,
                   status,
                   priority,
+                  assignedTo,
                   created,
                   _id,
-                  assignedDev,
+                  assignedTeam,
                   comments,
+                  submitter,
                   project,
                   type,
                 }) => {
@@ -58,16 +60,64 @@ class TicketsList extends Component {
                         <td>
                           <div className="d-flex no-block align-items-center">
                             <div className="">
-                              <h5 className="mb-0 font-16 font-medium">
-                                {title}
-                              </h5>
+                              <Link
+                                to={{
+                                  pathname: `/ticketdetail/${_id}`,
+                                  state: {
+                                    summary,
+                                    description,
+                                    status,
+                                    priority,
+                                    submitter,
+                                    assignedTeam,
+                                    project,
+                                    assignedTo,
+                                    created,
+                                    comments,
+                                    type,
+                                    _id,
+                                  },
+                                }}
+                              >
+                                <h5 className="mb-0 font-16 font-medium">
+                                  {summary}
+                                </h5>
+                              </Link>
                             </div>
                           </div>
                         </td>
-
+                        <td>{description}</td>
                         {status === "Open" ? (
                           <td>
                             <li className="border-0 p-0 text-success list-inline-item">
+                              <i className="fa fa-circle"></i> {status}
+                            </li>
+                          </td>
+                        ) : null}
+                        {status === "Assigned" ? (
+                          <td>
+                            <li className="border-0 p-0 text-info list-inline-item">
+                              <i className="fa fa-circle"></i> {status}
+                            </li>
+                          </td>
+                        ) : null}
+                        {status === "In progress" ? (
+                          <td>
+                            <li className="border-0 p-0 text-warning list-inline-item">
+                              <i className="fa fa-circle"></i> {status}
+                            </li>
+                          </td>
+                        ) : null}
+                        {status === "Reopened" ? (
+                          <td>
+                            <li className="border-0 p-0 text-secondary list-inline-item">
+                              <i className="fa fa-circle"></i> {status}
+                            </li>
+                          </td>
+                        ) : null}
+                        {status === "Cancelled" ? (
+                          <td>
+                            <li className="border-0 p-0 text-danger list-inline-item">
                               <i className="fa fa-circle"></i> {status}
                             </li>
                           </td>
@@ -104,32 +154,6 @@ class TicketsList extends Component {
                           </td>
                         ) : null}
                         <td>{moment(created).fromNow()}</td>
-                        <td>
-                          <Link
-                            to={{
-                              pathname: `/ticketdetail/${_id}`,
-                              state: {
-                                title,
-                                description,
-                                status,
-                                priority,
-                                assignedDev,
-                                project,
-                                created,
-                                comments,
-                                type,
-                                _id,
-                              },
-                            }}
-                          >
-                            <Button
-                              color="success"
-                              className="btn bg-secondary border border-secondary"
-                            >
-                              Detail
-                            </Button>
-                          </Link>
-                        </td>
                       </tr>
                     </tbody>
                   );

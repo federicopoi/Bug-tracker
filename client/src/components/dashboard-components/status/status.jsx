@@ -12,11 +12,20 @@ class Status extends Component {
     const options = {
       data: [
         {
-          type: "column",
+          type: "bar",
           dataPoints: [
-            { label: "Total Bugs", y: OpenTickets.length, color: "#3483B3" },
-            { label: "Open Bugs", y: tickets.length, color: "#88DD45" },
+            { label: "Total Tickets", y: OpenTickets.length, color: "#3483B3" },
+            { label: "Open", y: tickets.length, color: "#88DD45" },
+            { label: "Assigned", y: ClosedTickets.length, color: "#DD4545" },
+            { label: "In Progress", y: ClosedTickets.length, color: "#DD4545" },
+            { label: "Cancelled", y: ClosedTickets.length, color: "#DD4545" },
             { label: "Closed Bugs", y: ClosedTickets.length, color: "#DD4545" },
+            { label: "ReOpened", y: ClosedTickets.length, color: "#DD4545" },
+            {
+              label: "To be Reviewed",
+              y: ClosedTickets.length,
+              color: "#DD4545",
+            },
           ],
         },
       ],

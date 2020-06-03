@@ -3,8 +3,12 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "../components/header/header.jsx";
 import Sidebar from "../components/sidebar/sidebar.jsx";
 import Footer from "../components/footer/footer.jsx";
-import ThemeRoutes from "../routes/routing.jsx";
-import ThemeRoutesSidebar from "../routes/routingsidebar.jsx";
+import {
+  ThemeRoutes,
+  ThemeRoutesSidebar,
+  ThemeRoutesSidebarProjects,
+  ThemeRoutesSidebarTeams,
+} from "../routes/routing";
 
 const Fulllayout = (props) => {
   const [width, setWidth] = useState(window.innerWidth);
@@ -52,7 +56,7 @@ const Fulllayout = (props) => {
       {/*--------------------------------------------------------------------------------*/}
       {/* Sidebar                                                                        */}
       {/*--------------------------------------------------------------------------------*/}
-      <Sidebar {...props} routes={ThemeRoutesSidebar} />
+      <SideBarFunction props={props} />
       {/*--------------------------------------------------------------------------------*/}
       {/* Page Main-Content                                                              */}
       {/*--------------------------------------------------------------------------------*/}
@@ -79,4 +83,20 @@ const Fulllayout = (props) => {
     </div>
   );
 };
+function SideBarFunction(props) {
+  const role = props.props.rest.user.role;
+  if (role === "Admin") {
+    return <Sidebar {...props} routes={ThemeRoutesSidebar} />;
+  } else if (
+    role === "Submitter" ||
+    role === "Project Manager" ||
+    role === "Updater"
+  ) {
+    return <Sidebar {...props} routes={ThemeRoutesSidebarProjects} />;
+  } else if (role === "Team Manager") {
+    return <Sidebar {...props} routes={ThemeRoutesSidebarTeams} />;
+  }
+  return null;
+}
+
 export default Fulllayout;

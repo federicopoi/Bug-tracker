@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
 
-const items = require("./routes/api/items");
 const projects = require("./routes/api/projects");
+const teams = require("./routes/api/teams");
 const tickets = require("./routes/api/tickets");
 const users = require("./routes/api/users");
 const auth = require("./routes/api/auth");
@@ -29,8 +29,8 @@ mongoose
   .catch((err) => console.log(err));
 
 // User routes
-app.use("/api/items", items);
 app.use("/api/projects", projects);
+app.use("/api/teams", teams);
 app.use("/api/tickets", tickets);
 app.use("/api/users", users);
 app.use("/api/auth", auth);

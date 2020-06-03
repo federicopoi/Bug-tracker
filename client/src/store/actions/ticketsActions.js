@@ -3,6 +3,8 @@ import {
   TICKETS_LOADING,
   CREATE_TICKET,
   ADD_COMMENT,
+  ASSIGN_TICKET,
+  UPDATE_TICKET,
 } from "./types";
 import { returnErrors } from "./errorActions";
 import axios from "axios";
@@ -37,6 +39,46 @@ export const createTicket = (ticket) => (dispatch) => {
           err.response.data,
           err.response.status,
           "CREATE_TICKET_FAIL"
+        )
+      );
+    });
+};
+
+export const assignTicket = (ticket) => (dispatch) => {
+  axios
+    .post("/api/tickets/assign", ticket)
+    .then((res) =>
+      dispatch({
+        type: ASSIGN_TICKET,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(
+        returnErrors(
+          err.response.data,
+          err.response.status,
+          "ASSIGN_TICKET_FAIL"
+        )
+      );
+    });
+};
+
+export const updateTicket = (ticket) => (dispatch) => {
+  axios
+    .post("/api/tickets/update", ticket)
+    .then((res) =>
+      dispatch({
+        type: UPDATE_TICKET,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(
+        returnErrors(
+          err.response.data,
+          err.response.status,
+          "UPDATE_TICKET_FAIL"
         )
       );
     });

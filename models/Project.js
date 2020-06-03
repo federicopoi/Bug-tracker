@@ -5,17 +5,27 @@ const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
       unique: true,
     },
-    description: {
+    manager: {
       type: String,
       required: true,
     },
-    personal: [{ type: Array, require: true }],
-    personalList: [{ type: String, require: true }],
+    teams: [
+      {
+        type: Array,
+        require: true,
+      },
+    ],
+    submitters: [
+      {
+        type: Array,
+        require: true,
+      },
+    ],
     created: {
       type: Date,
       default: Date.now,

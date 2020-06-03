@@ -3,6 +3,8 @@ import {
   TICKETS_LOADING,
   CREATE_TICKET,
   ADD_COMMENT,
+  ASSIGN_TICKET,
+  UPDATE_TICKET,
 } from "../actions/types";
 const initState = {
   tickets: [],
@@ -23,9 +25,15 @@ export default function (state = initState, action) {
         tickets: [action.payload, ...state.tickets],
       };
     case ADD_COMMENT:
+    case UPDATE_TICKET:
       return {
         ...state,
-        tickets: [action.payload, ...state.tickets],
+        tickets: [action.payload],
+      };
+    case ASSIGN_TICKET:
+      return {
+        ...state,
+        tickets: [action.payload],
       };
     case TICKETS_LOADING:
       return {

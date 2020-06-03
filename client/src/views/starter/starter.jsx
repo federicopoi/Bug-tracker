@@ -3,12 +3,23 @@ import { Row, Col } from "reactstrap";
 import { Status, Priority, Title } from "../../components/dashboard-components";
 import { connect } from "react-redux";
 import { getTickets } from "../../store/actions/ticketsActions";
+import { Redirect } from "react-router-dom";
+
 class Starter extends Component {
   componentDidMount() {
     this.props.getTickets();
   }
   render() {
     const { tickets } = this.props.tickets;
+    const { name, role, email } = this.props.user;
+    if (
+      role === "Submitter" ||
+      role === "Project Manager" ||
+      role === "Updater"
+    )
+      return <Redirect to="/myprojects" />;
+
+    if (role === "Team Manager") return <Redirect to="/manageteams" />;
     return (
       <div>
         <Title></Title>
@@ -27,6 +38,7 @@ class Starter extends Component {
 const mapStateToProps = (state) => {
   return {
     tickets: state.tickets,
+    user: state.auth.user,
   };
 };
 export default connect(mapStateToProps, { getTickets })(Starter);

@@ -23,8 +23,16 @@ export const UPDATE_USERS = "UPDATE_USERS";
 export const GET_PROJECTS = "GET_PROJECTS";
 export const PROJECTS_LOADING = "PROJECTS_LOADING";
 export const CREATE_PROJECT = "CREATE_PROJECT";
+export const UPDATE_PROJECT = "UPDATE_PROJECT";
+// Teams
+export const GET_TEAMS = "GET_TEAMS";
+export const TEAMS_LOADING = "TEAMS_LOADING";
+export const CREATE_TEAM = "CREATE_TEAM";
+export const UPDATE_TEAM = "UPDATE_TEAM";
 // Tickets
 export const GET_TICKETS = "GET_TICKETS";
 export const TICKETS_LOADING = "TICKETS_LOADING";
 export const CREATE_TICKET = "CREATE_TICKET";
 export const ADD_COMMENT = "ADD_COMMENT";
+export const ASSIGN_TICKET = "ASSIGN_TICKET";
+export const UPDATE_TICKET = "UPDATE_TICKET";

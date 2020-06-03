@@ -31,7 +31,7 @@ class TicketsComments extends Component {
     const { message } = this.state;
 
     const newComment = {
-      title: this.props.props.title,
+      summary: this.props.props.summary,
       comment: {
         commenter: this.props.user.name,
         message,
@@ -50,7 +50,7 @@ class TicketsComments extends Component {
     return (
       <div>
         <Form onSubmit={this.onSubmit} id="form">
-          <Row className="mb-3">
+          <Row className="mb-1">
             <Col lg={10}>
               <FormGroup>
                 <Input
@@ -85,7 +85,7 @@ class TicketsComments extends Component {
               </thead>
               {tickets &&
                 tickets
-                  .filter(({ title }) => title === this.props.props.title)
+                  .filter(({ summary }) => summary === this.props.props.summary)
                   .map(({ comments }) => {
                     return (
                       comments &&

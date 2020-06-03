@@ -18,7 +18,7 @@ class Tickets extends Component {
   }
   render() {
     const { tickets } = this.props.tickets;
-    const { title } = this.props.props;
+    const { name } = this.props.props;
     console.log(tickets);
     return (
       <Card>
@@ -26,37 +26,38 @@ class Tickets extends Component {
           <div className="d-flex align-items-center">
             <div className="">
               <CardTitle>Tickets</CardTitle>
-              <CardSubtitle>All tickets assigned to Bug Tracker</CardSubtitle>
+              <CardSubtitle>All tickets assigned to {name}</CardSubtitle>
             </div>
             <div className="ml-auto d-flex no-block align-items-center">
               <div className="dl">
-                <CreateTicketModal title={title}></CreateTicketModal>
+                <CreateTicketModal name={name}></CreateTicketModal>
               </div>
             </div>
           </div>
           <Table className="no-wrap v-middle" responsive>
             <thead>
               <tr className="border-0">
-                <th className="border-0">Name</th>
+                <th className="border-0">Summary</th>
                 <th className="border-0">Status</th>
-
                 <th className="border-0">Priority</th>
                 <th className="border-0">Created</th>
               </tr>
             </thead>
             {tickets &&
               tickets
-                .filter(({ project }) => project === title)
+                .filter(({ project }) => project === name)
                 .map(
                   ({
-                    title,
+                    summary,
                     description,
                     status,
                     priority,
                     created,
                     _id,
-                    assignedDev,
+                    assignedTo,
+                    assignedTeam,
                     comments,
+                    submitter,
                     project,
                     type,
                   }) => {
@@ -66,15 +67,64 @@ class Tickets extends Component {
                           <td>
                             <div className="d-flex no-block align-items-center">
                               <div className="">
-                                <h5 className="mb-0 font-16 font-medium">
-                                  {title}
-                                </h5>
+                                <Link
+                                  to={{
+                                    pathname: `/ticketdetail/${_id}`,
+                                    state: {
+                                      summary,
+                                      description,
+                                      status,
+                                      priority,
+                                      assignedTo,
+                                      submitter,
+                                      assignedTeam,
+                                      project,
+                                      created,
+                                      comments,
+                                      type,
+                                      _id,
+                                    },
+                                  }}
+                                >
+                                  <h5 className="mb-0 font-16 font-medium">
+                                    {summary}
+                                  </h5>
+                                </Link>
                               </div>
                             </div>
                           </td>
+
                           {status === "Open" ? (
                             <td>
                               <li className="border-0 p-0 text-success list-inline-item">
+                                <i className="fa fa-circle"></i> {status}
+                              </li>
+                            </td>
+                          ) : null}
+                          {status === "Assigned" ? (
+                            <td>
+                              <li className="border-0 p-0 text-info list-inline-item">
+                                <i className="fa fa-circle"></i> {status}
+                              </li>
+                            </td>
+                          ) : null}
+                          {status === "In progress" ? (
+                            <td>
+                              <li className="border-0 p-0 text-warning list-inline-item">
+                                <i className="fa fa-circle"></i> {status}
+                              </li>
+                            </td>
+                          ) : null}
+                          {status === "Reopened" ? (
+                            <td>
+                              <li className="border-0 p-0 text-secondary list-inline-item">
+                                <i className="fa fa-circle"></i> {status}
+                              </li>
+                            </td>
+                          ) : null}
+                          {status === "Cancelled" ? (
+                            <td>
+                              <li className="border-0 p-0 text-danger list-inline-item">
                                 <i className="fa fa-circle"></i> {status}
                               </li>
                             </td>
@@ -111,32 +161,6 @@ class Tickets extends Component {
                             </td>
                           ) : null}
                           <td>{moment(created).fromNow()}</td>
-                          <td>
-                            <Link
-                              to={{
-                                pathname: `/ticketdetail/${_id}`,
-                                state: {
-                                  title,
-                                  description,
-                                  status,
-                                  priority,
-                                  assignedDev,
-                                  project,
-                                  created,
-                                  comments,
-                                  type,
-                                  _id,
-                                },
-                              }}
-                            >
-                              <Button
-                                color="success"
-                                className="btn bg-secondary border border-secondary"
-                              >
-                                Detail
-                              </Button>
-                            </Link>
-                          </td>
                         </tr>
                       </tbody>
                     );

@@ -21,41 +21,35 @@ router.get("/", (req, res) => {
 // @desc Create A Project
 // @access Public
 router.post("/", (req, res) => {
-  const { title, description, personal } = req.body;
+  const { name, manager, teams, submitters } = req.body;
 
   // Simple validation
-  if (!title || !description || !personal) {
+  if (!name || !manager || !teams || !submitters) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
 
-  User.find({ name: personal.map((item, index) => item) }).then((...users) => {
-    const newProject = new Project({
-      title,
-      description,
-      personal: users,
-      personalList: personal,
-    });
-
-    newProject.save().then((project) => res.json(project));
+  const newProject = new Project({
+    name,
+    manager,
+    teams,
+    submitters,
   });
+
+  newProject.save().then((project) => res.json(project));
 });
 
 // @route POST api/projects/update
 // @desc Update Project Users Role
 // @access Public
 router.post("/update", (req, res) => {
-  const { title, personal } = req.body;
+  const { name, teams, submitters } = req.body;
 
-  Project.findOne({ title }).exec((err, project) => {
+  Project.findOne({ name }).exec((err, project) => {
     if (err) console.log("Update Project  ", err);
-    User.find({ name: personal.map((item, index) => item) }).then(
-      (...users) => {
-        project.personal = users;
-        project.personalList = personal;
-        project.save();
-        res.json(project);
-      }
-    );
+    project.teams = teams;
+    project.submitters = submitters;
+    project.save();
+    res.json(project);
   });
 });
 
