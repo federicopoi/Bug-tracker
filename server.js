@@ -16,11 +16,12 @@ app.use(express.json());
 
 // DB Config
 const db = config.get("mongoURI");
+const port = process.env.PORT || 5000;
 
 // Connect to Mongo
 
 mongoose
-  .connect(db, {
+  .connect(process.env.MONGODB_URI || db, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -34,25 +35,14 @@ app.use("/api/teams", teams);
 app.use("/api/tickets", tickets);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
-app.use(fileUpload());
-// Upload Endpoint
-app.post("/upload", (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: "No file uploaded" });
-  }
 
-  const file = req.files.file;
+// Step 3
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
 
-  file.mv(`${__dirname}/client/public/uploads/${file.name}`, (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html")); // relative path
   });
-});
-
-const port = process.env.PORT || 5000;
+}
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
