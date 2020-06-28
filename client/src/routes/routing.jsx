@@ -122,3 +122,13 @@ export var ThemeRoutesSidebarProjects = [
 
   { path: "/", pathTo: "/myprojects", name: "My Projects", redirect: true },
 ];
+
+export var ThemeRoutesSidebarUpdaters = [
+  {
+    path: "/mytickets",
+    name: "My Tickets",
+    icon: "mdi mdi-file-document-box",
+    component: MyTickets,
+  },
+  { path: "/", pathTo: "/mytickets", name: "My Tickets", redirect: true },
+];

@@ -12,12 +12,9 @@ class Starter extends Component {
   render() {
     const { tickets } = this.props.tickets;
     const { name, role, email } = this.props.user;
-    if (
-      role === "Submitter" ||
-      role === "Project Manager" ||
-      role === "Updater"
-    )
+    if (role === "Submitter" || role === "Project Manager")
       return <Redirect to="/myprojects" />;
+    if (role === "Updater") return <Redirect to="/mytickets" />;
 
     if (role === "Team Manager") return <Redirect to="/manageteams" />;
     return (

@@ -37,7 +37,7 @@ export class ManageUsers extends Component {
               Select User
             </Label>
             <Input type="select" name="name" id="name" onChange={this.onChange}>
-              ><option>Select Option</option>
+              <option>Select Option</option>
               {users &&
                 users
                   .filter(({ name }) => name !== this.props.user.name)

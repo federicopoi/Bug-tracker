@@ -41,6 +41,7 @@ const TicketSchema = new Schema(
       type: String,
       required: true,
     },
+    meta_data: {},
     comments: {
       type: Array,
       commenter: {

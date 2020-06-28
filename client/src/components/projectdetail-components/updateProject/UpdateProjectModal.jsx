@@ -4,7 +4,6 @@ import { clearErrors } from "../../../store/actions/errorActions";
 import { connect } from "react-redux";
 import { getUsers } from "../../../store/actions/usersActions";
 import { getTeams } from "../../../store/actions/teamActions";
-
 import {
   Button,
   Modal,
@@ -77,10 +76,10 @@ export class UpdateProjectModal extends Component {
       this.toggle();
     }
   };
+
   render() {
     const { users } = this.props.users;
     const { teams } = this.props.teams;
-
     return (
       <div>
         <Button onClick={this.toggle}>Manage</Button>

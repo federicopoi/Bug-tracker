@@ -87,7 +87,7 @@ export class AssignTicketModal extends Component {
                   id="assignedTo"
                   onChange={this.onChange}
                 >
-                  ><option>Select Option</option>
+                  <option>Select Option</option>
                   {teams &&
                     teams
                       .filter(({ name }) => name === this.props.name)

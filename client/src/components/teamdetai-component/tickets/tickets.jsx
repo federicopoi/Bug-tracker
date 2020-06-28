@@ -39,7 +39,10 @@ class Tickets extends Component {
             </thead>
             {tickets &&
               tickets
-                .filter(({ assignedTeam }) => assignedTeam === name)
+                .filter(
+                  ({ assignedTeam, status }) =>
+                    assignedTeam === name && status !== "Open"
+                )
                 .map(
                   ({
                     summary,

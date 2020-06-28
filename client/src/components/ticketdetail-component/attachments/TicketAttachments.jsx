@@ -7,6 +7,7 @@ import {
   Table,
   Button,
 } from "reactstrap";
+import UploadFileModal from "./UploadFileModal";
 export class TicketAttachments extends Component {
   render() {
     return (
@@ -20,7 +21,7 @@ export class TicketAttachments extends Component {
               </div>
               <div className="ml-auto d-flex no-block align-items-center">
                 <div className="dl">
-                  <Button>Upload File</Button>
+                  <UploadFileModal></UploadFileModal>
                 </div>
               </div>
             </div>

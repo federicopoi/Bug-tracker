@@ -22,11 +22,9 @@ class ProjectList extends Component {
   render() {
     const { projects } = this.props.projects;
     const { role, name } = this.props.user;
-    const toConos = projects.filter(({ submitters }) =>
-      submitters.map((item) => item[0] !== "Submitter 1")
-    );
-
-    console.log(toConos);
+    // const toConos = projects.filter(({ submitters }) =>
+    //   submitters.map((item) => item[0] !== "Submitter 1")
+    // );
     return (
       <Card>
         <CardBody>

@@ -25,6 +25,7 @@ export class CreateTicketModal extends Component {
     project: this.props.name,
     submitter: this.props.user.name,
     type: "",
+    file: null,
     msg: null,
   };
 
@@ -70,7 +71,11 @@ export class CreateTicketModal extends Component {
       submitter,
       project,
       type,
+      file,
     } = this.state;
+
+    const formData = new FormData();
+    formData.append("myfile", file);
 
     // Create usre object
     const newTicket = {
@@ -81,6 +86,7 @@ export class CreateTicketModal extends Component {
       submitter,
       project,
       type,
+      formData,
     };
     this.props.createTicket(newTicket);
     if (
@@ -149,7 +155,7 @@ export class CreateTicketModal extends Component {
                   id="assignedTeam"
                   onChange={this.onChange}
                 >
-                  ><option>Select Option</option>
+                  <option>Select Option</option>
                   {teams &&
                     teams.map(({ name, _id }) => {
                       return <option key={_id}>{name}</option>;
@@ -171,7 +177,12 @@ export class CreateTicketModal extends Component {
                   <option>Analysis</option>
                 </Input>
                 <Label for="exampleFile">Attach File</Label>
-                <Input type="file" name="file" id="exampleFile" />
+                <Input
+                  type="file"
+                  name="file"
+                  id="file"
+                  onChange={this.onChange}
+                />
                 {this.state.msg ? (
                   <Alert color="danger" className="mt-3">
                     {this.state.msg}

@@ -33,7 +33,7 @@ export default function (state = initState, action) {
     case ASSIGN_TICKET:
       return {
         ...state,
-        tickets: [action.payload],
+        tickets: [action.payload, ...state.tickets],
       };
     case TICKETS_LOADING:
       return {

@@ -8,6 +8,7 @@ import {
   ThemeRoutesSidebar,
   ThemeRoutesSidebarProjects,
   ThemeRoutesSidebarTeams,
+  ThemeRoutesSidebarUpdaters,
 } from "../routes/routing";
 
 const Fulllayout = (props) => {
@@ -87,14 +88,12 @@ function SideBarFunction(props) {
   const role = props.props.rest.user.role;
   if (role === "Admin") {
     return <Sidebar {...props} routes={ThemeRoutesSidebar} />;
-  } else if (
-    role === "Submitter" ||
-    role === "Project Manager" ||
-    role === "Updater"
-  ) {
+  } else if (role === "Submitter" || role === "Project Manager") {
     return <Sidebar {...props} routes={ThemeRoutesSidebarProjects} />;
   } else if (role === "Team Manager") {
     return <Sidebar {...props} routes={ThemeRoutesSidebarTeams} />;
+  } else if (role === "Updater") {
+    return <Sidebar {...props} routes={ThemeRoutesSidebarUpdaters} />;
   }
   return null;
 }
