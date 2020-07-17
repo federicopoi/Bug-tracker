@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { login } from "../../store/actions/authActions";
 import { clearErrors } from "../../store/actions/errorActions";
 import { Alert, Label, Input, Form, FormGroup, Button } from "reactstrap";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 export class LoginPage extends Component {
   state = {
@@ -87,9 +87,11 @@ export class LoginPage extends Component {
                   <Button color="dark" block style={{ marginTop: "2rem" }}>
                     Login
                   </Button>
-                  <p className="forgot-password text-right">
-                    Login as a demo user <a href="/">here</a>
-                  </p>
+                  <Link to="/logindemo">
+                    <p className="forgot-password text-right">
+                      Login as a demo user <a href="/">here</a>
+                    </p>
+                  </Link>
                   <p className="forgot-password text-right">
                     Sign Up <a href="/register">here</a>
                   </p>

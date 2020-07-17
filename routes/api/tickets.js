@@ -49,6 +49,12 @@ router.post("/", (req, res) => {
     assignedTeam,
     project,
     type,
+    history: {
+      property: "Created ticket",
+      oldValue: "",
+      newValue: "",
+      date: Date.now(),
+    },
   });
 
   newTicket.save().then((ticket) => res.json(ticket));
@@ -64,6 +70,39 @@ router.post("/assign", (req, res) => {
     if (err) console.log("Assigned Ticket  ", err);
     ticket.assignedTo = assignedTo;
     ticket.status = "Assigned";
+    const arr = ticket.history;
+    const history = {
+      property: "Updated status",
+      oldValue: "Open",
+      newValue: "Assigned",
+      date: Date.now(),
+    };
+    const concatArr = arr.concat(history);
+    ticket.history = concatArr;
+    ticket.save();
+    res.json(ticket);
+  });
+});
+
+// @route POST api/tickets/derive
+// @desc Update ticket assigned team
+// @access Public
+router.post("/derive", (req, res) => {
+  const { summary, assignedTeam, oldTeam } = req.body;
+
+  Ticket.findOne({ summary }).exec((err, ticket) => {
+    if (err) console.log("Assigned Team Ticket  ", err);
+    ticket.assignedTeam = assignedTeam;
+
+    const arr = ticket.history;
+    const history = {
+      property: "Updated Team",
+      oldValue: oldTeam,
+      newValue: assignedTeam,
+      date: Date.now(),
+    };
+    const concatArr = arr.concat(history);
+    ticket.history = concatArr;
     ticket.save();
     res.json(ticket);
   });
@@ -91,14 +130,23 @@ router.post("/addcomment", (req, res) => {
 // @desc Update Ticket
 // @access Public
 router.post("/update", (req, res) => {
-  const { summary, description, status, priority } = req.body;
+  const { summary, status } = req.body;
 
   Ticket.findOne({ summary }).exec((err, ticket) => {
     if (err) console.log("Update Ticket  ", err);
 
+    const arr = ticket.history;
+    const history = {
+      property: "Updated status",
+      oldValue: ticket.status,
+      newValue: status,
+      date: Date.now(),
+    };
+    const concatArr = arr.concat(history);
+    if (ticket.status !== status) {
+      ticket.history = concatArr;
+    }
     ticket.summary = summary;
-    ticket.description = description;
-    ticket.priority = priority;
     ticket.status = status;
     ticket.save();
     res.json(ticket);

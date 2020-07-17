@@ -5,6 +5,7 @@ import {
   AssignedPersonal,
   Detail,
   Tickets,
+  ClosedTickets,
 } from "../../components/projectdetail-components";
 
 const ProjectDetail = (props) => {
@@ -19,6 +20,7 @@ const ProjectDetail = (props) => {
           </Col>
           <Col sm={6} lg={8}>
             <Tickets props={props.location.state}></Tickets>
+            <ClosedTickets props={props.location.state}></ClosedTickets>
           </Col>
         </Row>
       </div>

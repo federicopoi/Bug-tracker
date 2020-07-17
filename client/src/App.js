@@ -4,6 +4,7 @@ import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 import Fulllayout from "./layouts/fulllayout";
 
 import LoginPage from "./auth-components/login/loginpage";
+import DemoUser from "./auth-components/demo/DemoUser";
 import RegisterPage from "./auth-components/register/registerpage";
 import "./assets/scss/style.css";
 import "./index.css";
@@ -25,6 +26,9 @@ class App extends Component {
         <Switch>
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+          <Route exact path="/logindemo">
+            <DemoUser />
           </Route>
           <Route exact path="/register">
             <RegisterPage />

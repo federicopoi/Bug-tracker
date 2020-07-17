@@ -37,7 +37,14 @@ export class ManageUsersList extends Component {
             </thead>
             {users &&
               users
-                .filter(({ name }) => name !== this.props.user.name)
+                .filter(
+                  ({ name, email }) =>
+                    name !== this.props.user.name &&
+                    email !== "submitterdemo@gmail.com" &&
+                    email !== "updaterdemo@gmail.com" &&
+                    email !== "teammandemo@gmail.com" &&
+                    email !== "prjmandemo@gmail.com"
+                )
                 .map(({ name, email, role, _id }) => {
                   return (
                     <tbody key={_id}>

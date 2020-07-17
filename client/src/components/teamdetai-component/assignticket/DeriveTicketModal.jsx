@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { updateTicket } from "../../../store/actions/ticketsActions";
+import { deriveTicket } from "../../../store/actions/ticketsActions";
 import { clearErrors } from "../../../store/actions/errorActions";
 import { connect } from "react-redux";
+import { getTickets } from "../../../store/actions/ticketsActions";
+import { getTeams } from "../../../store/actions/teamActions";
 
 import {
   Button,
@@ -14,12 +16,15 @@ import {
   FormGroup,
   Alert,
 } from "reactstrap";
-export class UpdateTicketModal extends Component {
+export class DeriveTicketModal extends Component {
+  componentDidMount() {
+    this.props.getTeams();
+    this.props.getTickets();
+  }
   state = {
     modal: false,
     summary: this.props.summary,
-    status: this.props.status,
-    msg: null,
+    assignedTeam: "",
   };
 
   componentDidUpdate(prevProps) {
@@ -27,7 +32,7 @@ export class UpdateTicketModal extends Component {
     if (error !== prevProps.error) {
       //Check for login error
       console.log(error.msg.msg);
-      if (error.id === "UPDATE_TICKET_FAIL") {
+      if (error.id === "DERIVE_TICKET_FAIL") {
         this.setState({
           msg: error.msg.msg,
         });
@@ -46,53 +51,64 @@ export class UpdateTicketModal extends Component {
     });
   };
   onChange = (e) => {
-    if (e.target.value !== "Select Option") {
-      this.setState({ [e.target.name]: e.target.value });
-    }
+    this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = (e) => {
     e.preventDefault();
-    const { summary, status } = this.state;
+    const { summary, assignedTeam } = this.state;
 
-    // Create usre object
+    // Create Project object
     const updatedTicket = {
       summary,
-
-      status,
+      assignedTeam,
+      oldTeam: this.props.name,
     };
-    this.props.updateTicket(updatedTicket);
-    if (summary === "" || status === "") {
-      console.log("Error");
-    } else {
+    this.props.deriveTicket(updatedTicket);
+    if (assignedTeam !== "") {
       this.toggle();
     }
   };
   render() {
+    const { teams } = this.props.teams;
+    const { tickets } = this.props.tickets;
+    const projectName =
+      tickets &&
+      tickets.filter(({ assignedTeam }) => assignedTeam === this.props.name);
+
+    const assignedTeams =
+      tickets &&
+      tickets
+        .filter(({ project }) => project === projectName[0].project)
+        .map(({ assignedTeam }) => assignedTeam);
+
+    const uniqueNames = Array.from(new Set(assignedTeams));
+
     return (
       <div>
-        <Button onClick={this.toggle} className="bg-success border-success">
-          Update Ticket
-        </Button>
+        <Button onClick={this.toggle}>Derive Ticket</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Update Ticket</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Derive ticket</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label className="mt-3">Status</Label>
+                <Label for="exampleSelect" className="mt-3">
+                  Select Team to derive
+                </Label>
                 <Input
                   type="select"
-                  name="status"
-                  id="status"
-                  defaultValue={this.props.status}
-                  className="mb-3"
+                  name="assignedTeam"
+                  id="assignedTeam"
                   onChange={this.onChange}
                 >
                   <option>Select Option</option>
-                  <option>In progress</option>
-                  <option>Closed</option>
-                  <option>Reopened</option>
-                  <option>Cancelled</option>
+                  {uniqueNames &&
+                    uniqueNames
+                      .filter((item) => item !== this.props.name)
+                      .map((item, key) => {
+                        return <option key={key}>{item}</option>;
+                      })}
                 </Input>
+
                 {this.state.msg ? (
                   <Alert color="danger" className="mt-3">
                     {this.state.msg}
@@ -111,9 +127,12 @@ export class UpdateTicketModal extends Component {
 }
 const mapStateToProps = (state) => ({
   error: state.error,
-  user: state.auth.user,
+  teams: state.teams,
+  tickets: state.tickets,
 });
 export default connect(mapStateToProps, {
-  updateTicket,
+  deriveTicket,
   clearErrors,
-})(UpdateTicketModal);
+  getTeams,
+  getTickets,
+})(DeriveTicketModal);

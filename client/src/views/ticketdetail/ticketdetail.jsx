@@ -9,7 +9,7 @@ import {
   TicketAttachments,
 } from "../../components/ticketdetail-component";
 
-const ProjectDetail = (props) => {
+const TicketDetailView = (props) => {
   const {
     match: { params },
   } = props;
@@ -33,4 +33,4 @@ const ProjectDetail = (props) => {
   );
 };
 
-export default ProjectDetail;
+export default TicketDetailView;

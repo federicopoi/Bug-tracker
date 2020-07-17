@@ -61,6 +61,29 @@ const TicketSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    history: {
+      type: Array,
+      property: {
+        type: String,
+        required: true,
+      },
+      oldValue: {
+        type: String,
+        required: true,
+      },
+      newValue: {
+        type: Date,
+        required: true,
+      },
+      date: {
+        type: Date,
+        required: true,
+      },
+    },
+    created: {
+      type: Date,
+      default: Date.now,
+    },
   },
 
   {

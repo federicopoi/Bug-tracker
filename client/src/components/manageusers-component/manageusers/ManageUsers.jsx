@@ -40,7 +40,14 @@ export class ManageUsers extends Component {
               <option>Select Option</option>
               {users &&
                 users
-                  .filter(({ name }) => name !== this.props.user.name)
+                  .filter(
+                    ({ name, email }) =>
+                      name !== this.props.user.name &&
+                      email !== "submitterdemo@gmail.com" &&
+                      email !== "updaterdemo@gmail.com" &&
+                      email !== "teammandemo@gmail.com" &&
+                      email !== "prjmandemo@gmail.com"
+                  )
                   .map(({ name, _id }) => {
                     return <option key={_id}>{name}</option>;
                   })}

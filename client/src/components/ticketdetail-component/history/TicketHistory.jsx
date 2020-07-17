@@ -1,19 +1,14 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Input,
-  Table,
-  Col,
-  Row,
-  Button,
-  Form,
-  FormGroup,
-} from "reactstrap";
+import { Card, CardBody, CardTitle, CardSubtitle, Table } from "reactstrap";
+import moment from "moment";
+import { connect } from "react-redux";
+import { getTickets } from "../../../store/actions/ticketsActions";
 export class TicketHistory extends Component {
+  componentDidMount() {
+    this.props.getTickets();
+  }
   render() {
+    const { tickets } = this.props.tickets;
     return (
       <div>
         <Card>
@@ -27,27 +22,41 @@ export class TicketHistory extends Component {
             <Table className="no-wrap v-middle" responsive>
               <thead>
                 <tr className="border-0">
-                  <th className="border-0">Propety</th>
+                  <th className="border-0">Property</th>
                   <th className="border-0">Old Value</th>
                   <th className="border-0">New Value</th>
                   <th className="border-0">Date</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div className="d-flex no-block align-items-center">
-                      <div className="">
-                        <h5 className="mb-0 font-16 font-medium"></h5>
-                      </div>
-                    </div>
-                  </td>
+              {tickets &&
+                tickets
+                  .filter(({ summary }) => summary === this.props.props.summary)
+                  .map(({ history }) => {
+                    return (
+                      history &&
+                      history.map(({ property, oldValue, newValue, date }) => {
+                        return (
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div className="d-flex no-block align-items-center">
+                                  <div className="">
+                                    <h5 className="mb-0 font-16 font-medium">
+                                      {property}
+                                    </h5>
+                                  </div>
+                                </div>
+                              </td>
 
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
+                              <td>{oldValue}</td>
+                              <td>{newValue}</td>
+                              <td>{moment(date).fromNow()}</td>
+                            </tr>
+                          </tbody>
+                        );
+                      })
+                    );
+                  })}
             </Table>
           </CardBody>
         </Card>
@@ -56,4 +65,9 @@ export class TicketHistory extends Component {
   }
 }
 
-export default TicketHistory;
+const mapStateToProps = (state) => {
+  return {
+    tickets: state.tickets,
+  };
+};
+export default connect(mapStateToProps, { getTickets })(TicketHistory);

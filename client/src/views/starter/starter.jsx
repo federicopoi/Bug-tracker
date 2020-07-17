@@ -21,11 +21,11 @@ class Starter extends Component {
       <div>
         <Title></Title>
         <Row>
-          <Col sm={6} lg={6}>
-            <Status tickets={tickets}></Status>
-          </Col>
-          <Col sm={6} lg={6}>
+          <Col sm={12} lg={6}>
             <Priority tickets={tickets}></Priority>
+          </Col>
+          <Col sm={12} lg={6}>
+            <Status tickets={tickets}></Status>
           </Col>
         </Row>
       </div>

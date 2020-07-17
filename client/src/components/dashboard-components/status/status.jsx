@@ -8,37 +8,48 @@ class Status extends Component {
   render() {
     const { tickets } = this.props;
     const OpenTickets = tickets.filter(({ status }) => status === "Open");
+    const AssignedTickets = tickets.filter(
+      ({ status }) => status === "Assigned"
+    );
+    const InProgressTickets = tickets.filter(
+      ({ status }) => status === "In Progress"
+    );
     const ClosedTickets = tickets.filter(({ status }) => status === "Closed");
+
+    const CancelledTickets = tickets.filter(
+      ({ status }) => status === "Cancelled"
+    );
+    const ReopenedTickets = tickets.filter(
+      ({ status }) => status === "Reopened"
+    );
+
     const options = {
-      data: [
-        {
-          type: "bar",
-          dataPoints: [
-            { label: "Total Tickets", y: OpenTickets.length, color: "#3483B3" },
-            { label: "Open", y: tickets.length, color: "#88DD45" },
-            { label: "Assigned", y: ClosedTickets.length, color: "#DD4545" },
-            { label: "In Progress", y: ClosedTickets.length, color: "#DD4545" },
-            { label: "Cancelled", y: ClosedTickets.length, color: "#DD4545" },
-            { label: "Closed Bugs", y: ClosedTickets.length, color: "#DD4545" },
-            { label: "ReOpened", y: ClosedTickets.length, color: "#DD4545" },
-            {
-              label: "To be Reviewed",
-              y: ClosedTickets.length,
-              color: "#DD4545",
-            },
-          ],
-        },
-      ],
-    };
-    const TaskTickets = tickets.filter(({ type }) => type === "Task");
-    const BugsTickets = tickets.filter(({ type }) => type === "Bug / Errors");
-    const options2 = {
       data: [
         {
           type: "column",
           dataPoints: [
-            { label: "Bug / Errors", y: BugsTickets.length, color: "#3483B3" },
-            { label: "Task", y: TaskTickets.length, color: "#88DD45" },
+            { label: "Open", y: OpenTickets.length, color: "#88DD45" },
+            {
+              label: "Assigned",
+              y: AssignedTickets.length,
+              color: "#367BDE",
+            },
+            {
+              label: "In Progress",
+              y: InProgressTickets.length,
+              color: "#DEAE36",
+            },
+            {
+              label: "Closed",
+              y: ClosedTickets.length,
+              color: "#DE3636",
+            },
+            { label: "ReOpened", y: ReopenedTickets.length, color: "#8D8483" },
+            {
+              label: "Cancelled",
+              y: CancelledTickets.length,
+              color: "#DE3636",
+            },
           ],
         },
       ],
@@ -53,16 +64,6 @@ class Status extends Component {
               </div>
             </div>
             <CanvasJSChart options={options} />
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <div className="d-flex align-items-center">
-              <div className="">
-                <CardTitle>Bugs by type</CardTitle>
-              </div>
-            </div>
-            <CanvasJSChart options={options2} />
           </CardBody>
         </Card>
       </div>

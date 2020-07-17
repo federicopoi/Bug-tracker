@@ -5,6 +5,7 @@ import {
   ADD_COMMENT,
   ASSIGN_TICKET,
   UPDATE_TICKET,
+  DERIVE_TICKET,
 } from "../actions/types";
 const initState = {
   tickets: [],
@@ -20,6 +21,7 @@ export default function (state = initState, action) {
         loading: false,
       };
     case CREATE_TICKET:
+    case ASSIGN_TICKET:
       return {
         ...state,
         tickets: [action.payload, ...state.tickets],
@@ -30,10 +32,13 @@ export default function (state = initState, action) {
         ...state,
         tickets: [action.payload],
       };
-    case ASSIGN_TICKET:
+
+    case DERIVE_TICKET:
       return {
         ...state,
-        tickets: [action.payload, ...state.tickets],
+        tickets: state.tickets.filter(
+          (item) => item._id !== action.payload._id
+        ),
       };
     case TICKETS_LOADING:
       return {

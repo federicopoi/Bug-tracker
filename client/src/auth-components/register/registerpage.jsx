@@ -16,14 +16,14 @@ export class RegisterPage extends Component {
   };
 
   static propTypes = {
-    isAuthenticated: PropTypes.bool,
+    registerSuccess: PropTypes.bool,
     error: PropTypes.object.isRequired,
     register: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps) {
-    const { error, isAuthenticated } = this.props;
+    const { error, registerSuccess } = this.props;
     if (error !== prevProps.error) {
       //Check for register error
       if (error.id === "REGISTER_FAIL") {
@@ -36,8 +36,8 @@ export class RegisterPage extends Component {
         });
       }
     }
-    if (isAuthenticated) {
-      this.props.history.push("/");
+    if (registerSuccess) {
+      this.props.history.push("/login");
     }
   }
   onChange = (e) => {
@@ -121,7 +121,6 @@ export class RegisterPage extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
   registerSuccess: state.auth.registerSuccess,
   error: state.error,
 });

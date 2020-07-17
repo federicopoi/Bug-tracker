@@ -11,8 +11,8 @@ import {
   Table,
   Button,
 } from "reactstrap";
-import CreateTicketModal from ".././createTicket/CreateTicketModal";
-class Tickets extends Component {
+import CreateTicketModal from "../createTicket/CreateTicketModal";
+class ClosedTickets extends Component {
   componentDidMount() {
     this.props.getTickets();
   }
@@ -25,13 +25,8 @@ class Tickets extends Component {
         <CardBody>
           <div className="d-flex align-items-center">
             <div className="">
-              <CardTitle>Tickets</CardTitle>
-              <CardSubtitle>All tickets assigned to {name}</CardSubtitle>
-            </div>
-            <div className="ml-auto d-flex no-block align-items-center">
-              <div className="dl">
-                <CreateTicketModal name={name}></CreateTicketModal>
-              </div>
+              <CardTitle>Closed Tickets</CardTitle>
+              <CardSubtitle>Tickets that have been alredy solved</CardSubtitle>
             </div>
           </div>
           <Table className="no-wrap v-middle" responsive>
@@ -47,7 +42,7 @@ class Tickets extends Component {
               tickets
                 .filter(
                   ({ project, status }) =>
-                    project === name && status !== "Closed"
+                    project === name && status === "Closed"
                 )
                 .map(
                   ({
@@ -181,4 +176,4 @@ const mapStateToProps = (state) => {
     tickets: state.tickets,
   };
 };
-export default connect(mapStateToProps, { getTickets })(Tickets);
+export default connect(mapStateToProps, { getTickets })(ClosedTickets);

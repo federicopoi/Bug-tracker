@@ -12,6 +12,7 @@ import {
   Button,
 } from "reactstrap";
 import AssignTicketModal from "../assignticket/AssignTicketModal";
+import DeriveTicketModal from "../assignticket/DeriveTicketModal";
 
 class UnassignTickets extends Component {
   componentDidMount() {
@@ -163,6 +164,11 @@ class UnassignTickets extends Component {
                             <AssignTicketModal summary={summary} name={name}>
                               Assign Ticket
                             </AssignTicketModal>
+                          </td>
+                          <td>
+                            <DeriveTicketModal name={name} summary={summary}>
+                              Derive Ticket
+                            </DeriveTicketModal>
                           </td>
                         </tr>
                       </tbody>

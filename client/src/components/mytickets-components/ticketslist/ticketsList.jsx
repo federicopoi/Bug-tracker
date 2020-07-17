@@ -3,23 +3,64 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { getTickets } from "../../../store/actions/ticketsActions";
+import "./TicketlistStyle.css";
 import {
   Card,
   CardBody,
   CardTitle,
   CardSubtitle,
   Table,
+  Col,
+  Row,
+  Container,
   Button,
 } from "reactstrap";
 
-class TicketsList extends Component {
-  componentDidMount() {
-    this.props.getTickets();
-  }
-  render() {
-    const { tickets } = this.props.tickets;
-    const { role, name } = this.props.user;
-    return (
+const useSortableData = (items, config = null) => {
+  const [sortConfig, setSortConfig] = React.useState(config);
+
+  const sortedItems = React.useMemo(() => {
+    let sortableItems = [...items];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [items, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  return { items: sortedItems, requestSort, sortConfig };
+};
+
+export const TicketsTable = (props) => {
+  const { items, requestSort, sortConfig } = useSortableData(props.tickets);
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
+  return (
+    <div>
       <Card>
         <CardBody>
           <div className="d-flex align-items-center">
@@ -31,17 +72,58 @@ class TicketsList extends Component {
           <Table className="no-wrap v-middle" responsive>
             <thead>
               <tr className="border-0">
-                <th className="border-0">Summary</th>
-                <th className="border-0">Description</th>
-                <th className="border-0">Status</th>
-                <th className="border-0">Priority</th>
-                <th className="border-0">Created</th>
+                <th className="border-0">
+                  Summary
+                  <Button
+                    type="button"
+                    onClick={() => requestSort("summary")}
+                    className={getClassNamesFor("summary")}
+                    color="link"
+                  ></Button>
+                </th>
+                <th className="border-0">
+                  Description
+                  <Button
+                    type="button"
+                    onClick={() => requestSort("description")}
+                    className={getClassNamesFor("description")}
+                    color="link"
+                  ></Button>
+                </th>
+                <th className="border-0">
+                  Status
+                  <Button
+                    type="button"
+                    onClick={() => requestSort("status")}
+                    className={getClassNamesFor("status")}
+                    color="link"
+                  ></Button>
+                </th>
+                <th className="border-0">
+                  Priority
+                  <Button
+                    type="button"
+                    onClick={() => requestSort("priority")}
+                    className={getClassNamesFor("priority")}
+                    color="link"
+                  ></Button>
+                </th>
+
+                <th className="border-0">
+                  Created
+                  <Button
+                    type="button"
+                    onClick={() => requestSort("created")}
+                    color="link"
+                    className={getClassNamesFor("created")}
+                  ></Button>
+                </th>
               </tr>
             </thead>
-            {role === "Updater"
-              ? tickets &&
-                tickets
-                  .filter(({ assignedTo }) => assignedTo === name)
+            {props.role === "Updater"
+              ? items &&
+                items
+                  .filter(({ assignedTo }) => assignedTo === props.name)
                   .map(
                     ({
                       summary,
@@ -162,13 +244,14 @@ class TicketsList extends Component {
                       );
                     }
                   )
-              : tickets &&
-                tickets.map(
+              : items &&
+                items.map(
                   ({
                     summary,
                     description,
                     status,
                     priority,
+
                     assignedTo,
                     created,
                     _id,
@@ -286,6 +369,21 @@ class TicketsList extends Component {
           </Table>
         </CardBody>
       </Card>
+    </div>
+  );
+};
+
+class TicketsList extends Component {
+  componentDidMount() {
+    this.props.getTickets();
+  }
+  render() {
+    const { tickets } = this.props.tickets;
+    const { role, name } = this.props.user;
+    return (
+      <div>
+        <TicketsTable tickets={tickets} role={role} name={name} />
+      </div>
     );
   }
 }

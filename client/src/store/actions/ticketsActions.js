@@ -5,6 +5,7 @@ import {
   ADD_COMMENT,
   ASSIGN_TICKET,
   UPDATE_TICKET,
+  DERIVE_TICKET,
 } from "./types";
 import { returnErrors } from "./errorActions";
 import axios from "axios";
@@ -59,6 +60,26 @@ export const assignTicket = (ticket) => (dispatch) => {
           err.response.data,
           err.response.status,
           "ASSIGN_TICKET_FAIL"
+        )
+      );
+    });
+};
+
+export const deriveTicket = (ticket) => (dispatch) => {
+  axios
+    .post("/api/tickets/derive", ticket)
+    .then((res) =>
+      dispatch({
+        type: DERIVE_TICKET,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(
+        returnErrors(
+          err.response.data,
+          err.response.status,
+          "DERIVE_TICKET_FAIL"
         )
       );
     });
