@@ -3,6 +3,7 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Demo](#demo)
 
 ## General info
 Catch is a software defect tracking system. Commonly known as a bug tracker. Catch is build with Mongo DB, Express JS, React JS, and Node JS.
@@ -29,3 +30,7 @@ $ npm install
 ``
 $ npm run dev
 ``
+
+## Demo
+You can demo this project through this link:
+https://my-bug-tracker.herokuapp.com/
