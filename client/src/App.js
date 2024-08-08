@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 import Fulllayout from "./layouts/fulllayout";
-
 import LoginPage from "./auth-components/login/loginpage";
 import DemoUser from "./auth-components/demo/DemoUser";
 import RegisterPage from "./auth-components/register/registerpage";
@@ -18,9 +17,6 @@ class App extends Component {
     console.log(this.props);
   }
   render() {
-    console.log(this.props.isLoading);
-    console.log(this.props.isAuthenticated);
-
     return (
       <BrowserRouter>
         <Switch>
